@@ -2,9 +2,14 @@ import 'package:firebase/views/home.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
-class Forget_Password extends StatelessWidget {
+class Forget_Password extends StatefulWidget {
   const Forget_Password({super.key});
 
+  @override
+  State<Forget_Password> createState() => _Forget_PasswordState();
+}
+
+class _Forget_PasswordState extends State<Forget_Password> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

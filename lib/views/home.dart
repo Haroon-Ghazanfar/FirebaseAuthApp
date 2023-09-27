@@ -1,4 +1,6 @@
+import 'package:firebase/views/Login.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 
 class Home extends StatefulWidget {
@@ -37,6 +39,11 @@ class _HomeState extends State<Home> {
               width: MediaQuery.of(context).size.width,
               child: Lottie.asset("assets/animation_ln1m1rf4.json"),
             ),
+            GestureDetector(
+                onTap: () {
+                  Get.off(Login());
+                },
+                child: Icon(Icons.logout)),
           ],
         ),
       ),

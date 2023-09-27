@@ -1,11 +1,21 @@
 import 'package:firebase/views/ForgetPassword.dart';
 import 'package:firebase/views/SignUp.dart';
 import 'package:firebase/views/home.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 
-class Login extends StatelessWidget {
+class Login extends StatefulWidget {
   const Login({super.key});
+
+  @override
+  State<Login> createState() => _LoginState();
+}
+
+class _LoginState extends State<Login> {
+  TextEditingController loginEmailcontroller = TextEditingController();
+  TextEditingController loginpasswordcontroller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +42,7 @@ class Login extends StatelessWidget {
             Container(
               margin: const EdgeInsets.symmetric(horizontal: 20.0),
               child: TextFormField(
+                controller: loginEmailcontroller,
                 keyboardType: TextInputType.emailAddress,
                 decoration: InputDecoration(
                   prefixIcon: Icon(Icons.email_outlined),
@@ -49,6 +60,7 @@ class Login extends StatelessWidget {
             Container(
               margin: const EdgeInsets.symmetric(horizontal: 20.0),
               child: TextFormField(
+                controller: loginpasswordcontroller,
                 keyboardType: TextInputType.visiblePassword,
                 decoration: InputDecoration(
                   prefixIcon: Icon(Icons.password_rounded),
@@ -65,9 +77,23 @@ class Login extends StatelessWidget {
               height: 15,
             ),
             ElevatedButton(
-              onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const Home()));
+              onPressed: () async {
+                var loginemail = loginEmailcontroller.text.trim();
+                var loginpassword = loginpasswordcontroller.text.trim();
+
+                try {
+                  final User? firebaseUser = (await FirebaseAuth.instance
+                          .signInWithEmailAndPassword(
+                              email: loginemail, password: loginpassword))
+                      .user;
+                  if (firebaseUser != Null) {
+                    Get.to(Home());
+                  } else {
+                    print("Invalid Email or Password");
+                  }
+                } on FirebaseAuthException catch (e) {
+                  print("Error$e");
+                }
               },
               child: const Text("Login"),
             ),
@@ -76,8 +102,7 @@ class Login extends StatelessWidget {
             ),
             TextButton(
               onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => Forget_Password()));
+                Get.to(Forget_Password());
               },
               child: Text("Forgot Password??"),
             ),
@@ -86,8 +111,7 @@ class Login extends StatelessWidget {
             ),
             TextButton(
               onPressed: () {
-                Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => SignUp()));
+                Get.to(SignUp());
               },
               child: Text("Don't have an Account? SignUp"),
             )

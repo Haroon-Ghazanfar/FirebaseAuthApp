@@ -1,16 +1,27 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase/services/SignUpServices.dart';
 import 'package:firebase/views/login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:lottie/lottie.dart';
 
-class SignUp extends StatelessWidget {
+class SignUp extends StatefulWidget {
   SignUp({super.key});
 
+  @override
+  State<SignUp> createState() => _SignUpState();
+}
+
+class _SignUpState extends State<SignUp> {
   TextEditingController nameController = TextEditingController();
+
   TextEditingController emailController = TextEditingController();
+
   TextEditingController phoneController = TextEditingController();
+
   TextEditingController passwordController = TextEditingController();
+
   TextEditingController confirmpasswordController = TextEditingController();
 
   @override
@@ -132,36 +143,24 @@ class SignUp extends StatelessWidget {
               height: 15,
             ),
             ElevatedButton(
-              onPressed: () {
+              onPressed: () async {
                 var name = nameController.text.trim();
                 var email = emailController.text.trim();
                 var phone = phoneController.text.trim();
                 var password = passwordController.text.trim();
                 var confirmpassword = confirmpasswordController.text.trim();
 
-                FirebaseAuth.instance
+                await FirebaseAuth.instance
                     .createUserWithEmailAndPassword(
                         email: email, password: password)
-                    .then((value) => {
-                          print("user created"),
-                          FirebaseFirestore.instance
-                              .collection("users")
-                              .doc()
-                              .set({
-                            'name': name,
-                            'email': email,
-                            'phone': phone,
-                          })
-                        });
-                // Navigator.push(context,
-                //     MaterialPageRoute(builder: (context) => const Home()));
+                    .then(
+                        (value) => {signUpUser(name, email, phone, password)});
               },
               child: const Text("   SignUp   "),
             ),
             TextButton(
               onPressed: () {
-                Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => Login()));
+                Get.to(() => Login());
               },
               child: Text("Already have an Account? SignIn"),
             )
