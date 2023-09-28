@@ -1,4 +1,6 @@
 import 'package:firebase/views/Login.dart';
+import 'package:firebase/views/notes_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
@@ -39,11 +41,35 @@ class _HomeState extends State<Home> {
               width: MediaQuery.of(context).size.width,
               child: Lottie.asset("assets/animation_ln1m1rf4.json"),
             ),
-            GestureDetector(
-                onTap: () {
-                  Get.off(Login());
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text("Logout"),
+                SizedBox(
+                  width: 10,
+                ),
+                GestureDetector(
+                  onTap: () {
+                    FirebaseAuth.instance.signOut();
+                    Get.off(Login());
+                  },
+                  child: Icon(Icons.logout),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            SizedBox(
+              height: 40,
+              width: 100,
+              child: FloatingActionButton(
+                onPressed: () {
+                  Get.to(Notes());
                 },
-                child: Icon(Icons.logout)),
+                child: Text("Add Notes"),
+              ),
+            )
           ],
         ),
       ),

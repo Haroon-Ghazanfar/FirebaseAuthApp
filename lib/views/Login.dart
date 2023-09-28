@@ -1,3 +1,5 @@
+// ignore_for_file: sized_box_for_whitespace
+
 import 'package:firebase/views/ForgetPassword.dart';
 import 'package:firebase/views/SignUp.dart';
 import 'package:firebase/views/home.dart';
@@ -29,6 +31,7 @@ class _LoginState extends State<Login> {
           ),
           backgroundColor: Colors.blue.shade900),
       body: SingleChildScrollView(
+        // ignore: sized_box_for_whitespace
         child: Column(
           children: [
             Container(
